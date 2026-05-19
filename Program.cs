@@ -3,6 +3,17 @@ using ProductsApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Konfiguracja CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 builder.Services.AddControllers();
 builder.Services.AddDbContext<ProductContext>(options =>
     options.UseInMemoryDatabase("Products"));
@@ -18,6 +29,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Użycie CORS
+app.UseCors("AllowAll");
 
 app.UseAuthorization();
 
